@@ -25,7 +25,7 @@ public:
     static constexpr size_type npos = std::string_view::npos;
 
     life_string_view(std::string_view sv)
-        : data_(sv), life_{} {}
+        : data_{sv}, life_{} {}
     life_string_view(std::string_view sv, std::shared_ptr<void> life)
         : data_{sv}, life_{life} {}
 
