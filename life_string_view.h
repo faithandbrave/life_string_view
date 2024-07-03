@@ -269,7 +269,7 @@ public:
         return a.data_ > b.data_;
     }
     friend  bool operator>=(life_string_view a, life_string_view b) noexcept {
-        return a.data_ > b.data_;
+        return a.data_ >= b.data_;
     }
 #endif
 
