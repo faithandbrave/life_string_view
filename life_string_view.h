@@ -1,8 +1,8 @@
 #pragma once
 
 #include <cstddef>
-#include <string_view>
 #include <memory>
+#include <string_view>
 #include <utility>
 
 namespace life {
