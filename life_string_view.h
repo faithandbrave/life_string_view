@@ -5,6 +5,10 @@
 #include <string_view>
 #include <utility>
 
+#if __cplusplus >= 202002L
+#include <compare>
+#endif
+
 namespace life {
 
 class life_string_view {
