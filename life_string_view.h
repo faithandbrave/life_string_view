@@ -1,7 +1,8 @@
 #pragma once
 
-#include <string_view>
+#include <cstddef>
 #include <memory>
+#include <string_view>
 #include <utility>
 
 namespace life {
@@ -113,7 +114,7 @@ public:
      size_type copy(char* s, size_type n, size_type pos = 0) const {
         return data_.copy(s, n, pos);
     }
-    life_string_view substr(std::size_t start = 0, std::size_t n = npos) const {
+    life_string_view substr(size_type start = 0, size_type n = npos) const {
         return {data_.substr(start, n), life_};
     }
      int compare(life_string_view sv) const noexcept {
