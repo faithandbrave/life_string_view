@@ -251,11 +251,17 @@ public:
         return a.data_ == b;
     }
 #if __cplusplus < 202002L
+    friend bool operator==(const char* a, life_string_view b) noexcept {
+        return a == b.data_;
+    }
     friend bool operator!=(life_string_view a, life_string_view b) noexcept {
         return a.data_ != b.data_;
     }
     friend bool operator!=(life_string_view a, const char* b) noexcept {
         return a.data_ != b;
+    }
+    friend bool operator!=(const char* a, life_string_view b) noexcept {
+        return a != b.data_;
     }
 #endif
 
