@@ -32,7 +32,7 @@ public:
     life_string_view(std::string_view sv)
         : data_{sv}, life_{} {}
     life_string_view(std::string_view sv, std::shared_ptr<void> life)
-        : data_{sv}, life_{life} {}
+        : data_{sv}, life_{std::move(life)} {}
 
     template <class T>
     static life_string_view allocate(T&& data) {
@@ -121,13 +121,13 @@ public:
     life_string_view substr(size_type start = 0, size_type n = npos) const {
         return {data_.substr(start, n), life_};
     }
-    int compare(life_string_view sv) const noexcept {
+    int compare(const life_string_view& sv) const noexcept {
         return data_.compare(sv.data_);
     }
-    int compare(size_type pos1, size_type n1, life_string_view sv) const {
+    int compare(size_type pos1, size_type n1, const life_string_view& sv) const {
         return data_.compare(pos1, n1, sv.data_);
     }
-    int compare(size_type pos1, size_type n1, life_string_view sv, size_type pos2, size_type n2) const {
+    int compare(size_type pos1, size_type n1, const life_string_view& sv, size_type pos2, size_type n2) const {
         return data_.compare(pos1, n1, sv.data_, pos2, n2);
     }
     int compare(const char* s) const {
@@ -140,7 +140,7 @@ public:
         return data_.compare(pos1, n1, s, n2);
     }
 #if __cplusplus >= 202002L
-    bool starts_with(life_string_view x) const noexcept {
+    bool starts_with(const life_string_view& x) const noexcept {
         return data_.starts_with(x.data_);
     }
     bool starts_with(char x) const noexcept {
@@ -149,7 +149,7 @@ public:
     bool starts_with(const char* x) const {
         return data_.starts_with(x);
     }
-    bool ends_with(life_string_view x) const noexcept {
+    bool ends_with(const life_string_view& x) const noexcept {
         return data_.ends_with(x.data_);
     }
     bool ends_with(char x) const noexcept {
@@ -160,7 +160,7 @@ public:
     }
 #endif
 #if __cplusplus >= 202302L
-    bool contains(life_string_view x) const noexcept {
+    bool contains(const life_string_view& x) const noexcept {
         return data_.contains(x.data_);
     }
     bool contains(char x) const noexcept {
@@ -171,7 +171,7 @@ public:
     }
 #endif
 
-    size_type find(life_string_view sv, size_type pos = 0) const noexcept {
+    size_type find(const life_string_view& sv, size_type pos = 0) const noexcept {
         return data_.find(sv.data_, pos);
     }
     size_type find(char c, size_type pos = 0) const noexcept {
@@ -183,7 +183,7 @@ public:
     size_type find(const char* s, size_type pos = 0) const {
         return data_.find(s, pos);
     }
-    size_type rfind(life_string_view s, size_type pos = npos) const noexcept {
+    size_type rfind(const life_string_view& s, size_type pos = npos) const noexcept {
         return data_.rfind(s.data_, pos);
     }
     size_type rfind(char c, size_type pos = npos) const noexcept {
@@ -195,7 +195,7 @@ public:
     size_type rfind(const char* s, size_type pos = npos) const {
         return data_.rfind(s, pos);
     }
-    size_type find_first_of(life_string_view sv, size_type pos = 0) const noexcept {
+    size_type find_first_of(const life_string_view& sv, size_type pos = 0) const noexcept {
         return data_.find_first_of(sv.data_, pos);
     }
     size_type find_first_of(char c, size_type pos = 0) const noexcept {
@@ -207,7 +207,7 @@ public:
     size_type find_first_of(const char* s, size_type pos = 0) const {
         return data_.find_first_of(s, pos);
     }
-    size_type find_last_of(life_string_view sv, size_type pos = npos) const noexcept {
+    size_type find_last_of(const life_string_view& sv, size_type pos = npos) const noexcept {
         return data_.find_last_of(sv.data_, pos);
     }
     size_type find_last_of(char c, size_type pos = npos) const noexcept {
@@ -219,7 +219,7 @@ public:
     size_type find_last_of(const char* s, size_type pos = npos) const {
         return data_.find_last_of(s, pos);
     }
-    size_type find_first_not_of(life_string_view sv, size_type pos = 0) const noexcept {
+    size_type find_first_not_of(const life_string_view& sv, size_type pos = 0) const noexcept {
         return data_.find_first_not_of(sv.data_, pos);
     }
     size_type find_first_not_of(char c, size_type pos = 0) const noexcept {
@@ -231,7 +231,7 @@ public:
     size_type find_first_not_of(const char* s, size_type pos = 0) const {
         return data_.find_first_not_of(s, pos);
     }
-    size_type find_last_not_of(life_string_view sv, size_type pos = npos) const noexcept {
+    size_type find_last_not_of(const life_string_view& sv, size_type pos = npos) const noexcept {
         return data_.find_last_not_of(sv.data_, pos);
     }
     size_type find_last_not_of(char c, size_type pos = npos) const noexcept {
@@ -244,36 +244,36 @@ public:
         return data_.find_last_not_of(s, pos);
     }
 
-    friend bool operator==(life_string_view a, life_string_view b) noexcept {
+    friend bool operator==(const life_string_view& a, const life_string_view& b) noexcept {
         return a.data_ == b.data_;
     }
-    friend bool operator==(life_string_view a, const char* b) noexcept {
+    friend bool operator==(const life_string_view& a, const char* b) noexcept {
         return a.data_ == b;
     }
 #if __cplusplus < 202002L
-    friend bool operator==(const char* a, life_string_view b) noexcept {
+    friend bool operator==(const char* a, const life_string_view& b) noexcept {
         return a == b.data_;
     }
-    friend bool operator!=(life_string_view a, life_string_view b) noexcept {
+    friend bool operator!=(const life_string_view& a, const life_string_view& b) noexcept {
         return a.data_ != b.data_;
     }
-    friend bool operator!=(life_string_view a, const char* b) noexcept {
+    friend bool operator!=(const life_string_view& a, const char* b) noexcept {
         return a.data_ != b;
     }
-    friend bool operator!=(const char* a, life_string_view b) noexcept {
+    friend bool operator!=(const char* a, const life_string_view& b) noexcept {
         return a != b.data_;
     }
 #endif
 
 #if __cplusplus >= 202002L
-    friend auto operator<=>(life_string_view a, life_string_view b) noexcept {
+    friend auto operator<=>(const life_string_view& a, const life_string_view& b) noexcept {
         return a.data_ <=> b.data_;
     }
     friend auto operator<=>(const life_string_view& a, const char* b) noexcept {
         return a.data_ <=> b;
     }
 #else
-    friend bool operator<(life_string_view a, life_string_view b) noexcept {
+    friend bool operator<(const life_string_view& a, const life_string_view& b) noexcept {
         return a.data_ < b.data_;
     }
     friend bool operator<(const life_string_view& a, const char* b) noexcept {
@@ -282,7 +282,7 @@ public:
     friend bool operator<(const char* a, const life_string_view& b) noexcept {
         return a < b.data_;
     }
-    friend bool operator<=(life_string_view a, life_string_view b) noexcept {
+    friend bool operator<=(const life_string_view& a, const life_string_view& b) noexcept {
         return a.data_ <= b.data_;
     }
     friend bool operator<=(const life_string_view& a, const char* b) noexcept {
@@ -291,7 +291,7 @@ public:
     friend bool operator<=(const char* a, const life_string_view& b) noexcept {
         return a <= b.data_;
     }
-    friend bool operator>(life_string_view a, life_string_view b) noexcept {
+    friend bool operator>(const life_string_view& a, const life_string_view& b) noexcept {
         return a.data_ > b.data_;
     }
     friend bool operator>(const life_string_view& a, const char* b) noexcept {
@@ -300,7 +300,7 @@ public:
     friend bool operator>(const char* a, const life_string_view& b) noexcept {
         return a > b.data_;
     }
-    friend bool operator>=(life_string_view a, life_string_view b) noexcept {
+    friend bool operator>=(const life_string_view& a, const life_string_view& b) noexcept {
         return a.data_ >= b.data_;
     }
     friend bool operator>=(const life_string_view& a, const char* b) noexcept {
@@ -311,7 +311,7 @@ public:
     }
 #endif
 
-    friend std::ostream& operator<<(std::ostream& os, life_string_view sv) {
+    friend std::ostream& operator<<(std::ostream& os, const life_string_view& sv) {
         return os << sv.data_;
     }
 };
@@ -321,7 +321,7 @@ public:
 namespace std {
     template <>
     struct hash<life::life_string_view> {
-        std::size_t operator()(life::life_string_view sv) const noexcept {
+        std::size_t operator()(const life::life_string_view& sv) const noexcept {
             return std::hash<std::string_view>{}(sv.string_view());
         }
     };
