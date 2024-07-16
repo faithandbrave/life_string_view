@@ -251,10 +251,10 @@ public:
     friend bool operator==(const basic_life_string_view& a, const CharT* b) noexcept {
         return a.data_ == b;
     }
-#if __cplusplus < 202002L
     friend bool operator==(const CharT* a, const basic_life_string_view& b) noexcept {
         return a == b.data_;
     }
+#if __cplusplus < 202002L
     friend bool operator!=(const basic_life_string_view& a, const basic_life_string_view& b) noexcept {
         return a.data_ != b.data_;
     }
