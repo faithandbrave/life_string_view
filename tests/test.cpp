@@ -1,6 +1,6 @@
 #include <catch2/catch_test_macros.hpp>
 
-#include "../life_string_view.h"
+#include <life_string_view.h>
 
 TEST_CASE("life_string_view", "[basic]") {
   life::life_string_view view{"Hello, World!"};
