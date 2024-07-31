@@ -37,6 +37,7 @@ public:
 
     template <class T>
     static basic_life_string_view allocate(T&& data) {
+        static_assert(!std::is_same_v<T, const CharT*>);
         auto p = std::make_shared<T>(std::forward<T>(data));
         return {*p, p};
     }

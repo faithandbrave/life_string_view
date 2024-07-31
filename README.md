@@ -59,7 +59,7 @@ git submodule update --init --recursive
 # confugire at "build" directory
 cmake -B build
 
-# build tests
+# build examples
 cmake --build build --config RelWithDebInfo --target example
 
 # run tests
