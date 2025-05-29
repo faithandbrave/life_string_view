@@ -32,8 +32,10 @@ install(
   DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake
 )
 
-if (PROJECT_IS_TOP_LEVEL OR BUILD_TESTING)
-  add_subdirectory(deps/Catch2 EXCLUDE_FROM_ALL)
-  add_subdirectory(tests EXCLUDE_FROM_ALL)
+if (PROJECT_IS_TOP_LEVEL)
+  if (BUILD_TESTING) 
+    add_subdirectory(deps/Catch2 EXCLUDE_FROM_ALL)
+    add_subdirectory(tests EXCLUDE_FROM_ALL)
+  endif()
   add_subdirectory(example EXCLUDE_FROM_ALL)
 endif()
