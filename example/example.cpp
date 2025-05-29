@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "../life_string_view.h"
+#include <life_string_view.h>
 
 life::life_string_view f(life::life_string_view sv) { return sv.substr(6, 3); }
 
